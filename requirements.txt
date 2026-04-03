@@ -1,0 +1,7 @@
+fastapi
+sqlalchemy
+uvicorn[standard]
+pydantic
+email-validator
+psycopg[binary]
+debugpy
