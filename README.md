@@ -214,7 +214,44 @@ docker run -it --rm <image-name>
 
 ---
 
-# 🏗️ 7. Architecture and Key User Journeys
+# ✅ 7. Running Tests Locally
+
+This project includes both unit and integration tests.
+
+## 1. Ensure PostgreSQL is available
+
+If you use Docker Compose from this repo, PostgreSQL is exposed on host port `5433`.
+
+## 2. Set the test database URL
+
+```bash
+export DATABASE_URL="postgresql://postgres:postgres@localhost:5433/fastapi_db"
+```
+
+## 3. Run unit + integration tests (excluding e2e)
+
+```bash
+pytest -v -m "not e2e"
+```
+
+## 4. Run all tests
+
+```bash
+pytest -v
+```
+
+---
+
+# 🐳 8. Docker Hub Image
+
+Update the repository name below with your Docker Hub username:
+
+- Docker Hub repository: `https://hub.docker.com/r/<your-dockerhub-username>/is601-assignment10`
+- Latest image tag: `<your-dockerhub-username>/is601-assignment10:latest`
+
+---
+
+# 🏗️ 9. Architecture and Key User Journeys
 
 ## Sequence Diagrams
 
@@ -305,7 +342,7 @@ C4Container
 
 ---
 
-# 📝 8. Submission Instructions
+# 📝 10. Submission Instructions
 
 After finishing your work:
 
