@@ -1,13 +1,13 @@
 from typing import List
-from fastapi import Depends, FastAPI, HTTPException, Request, RedirectResponse, Form
-from fastapi.responses import HTMLResponse
+from fastapi import Depends, FastAPI, HTTPException, Request, Form
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app.database import Base, engine, get_db
 from app.schemas import UserCreate, UserResponse
-from app.models import User, Calculator
+from app.models.user import User
 import os
 
 app = FastAPI()
