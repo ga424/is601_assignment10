@@ -5,7 +5,7 @@ from typing import Optional, Dict, Any
 
 from sqlalchemy import Column, String, DateTime, Boolean
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, synonym
 from sqlalchemy.exc import IntegrityError
 from passlib.context import CryptContext
 from jose import JWTError, jwt
@@ -31,7 +31,8 @@ class User(Base):
     last_name = Column(String(50), nullable=False)
     email = Column(String(120), unique=True, nullable=False)
     username = Column(String(50), unique=True, nullable=False)
-    password = Column(String(255), nullable=False)
+    password_hash = Column(String(255), nullable=False)
+    password = synonym("password_hash")
     is_active = Column(Boolean, default=True, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
     last_login = Column(DateTime, nullable=True)
@@ -48,7 +49,7 @@ class User(Base):
 
     def verify_password(self, plain_password: str) -> bool:
         """Verify a plain password against the hashed password."""
-        return pwd_context.verify(plain_password, self.password)
+        return pwd_context.verify(plain_password, self.password_hash)
 
     @staticmethod
     def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
@@ -95,7 +96,7 @@ class User(Base):
                 last_name=user_create.last_name,
                 email=user_create.email,
                 username=user_create.username,
-                password=cls.hash_password(user_create.password),
+                password_hash=cls.hash_password(user_create.password),
                 is_active=True,
                 is_verified=False
             )

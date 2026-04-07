@@ -18,6 +18,10 @@ class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)  # Enable mapping from ORM objects
 
 
+class UserRead(UserResponse):
+    """Assignment-required read schema; omits password_hash by design."""
+
+
 class Token(BaseModel):
     """Schema for authentication token response"""
     access_token: str

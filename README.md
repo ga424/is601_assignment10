@@ -246,8 +246,8 @@ pytest -v
 
 Update the repository name below with your Docker Hub username:
 
-- Docker Hub repository: `https://hub.docker.com/r/<your-dockerhub-username>/is601-assignment10`
-- Latest image tag: `<your-dockerhub-username>/is601-assignment10:latest`
+- Docker Hub repository: `https://hub.docker.com/r/ga424/is601-assignment10`
+- Latest image tag: `ga424/is601-assignment10:latest`
 
 ---
 

@@ -1,7 +1,7 @@
 # app/schemas/__init__.py
 
 from .base import UserBase, PasswordMixin, UserCreate, UserLogin
-from .user import UserResponse, Token, TokenData
+from .user import UserRead, UserResponse, Token, TokenData
 
 __all__ = [
     "UserBase",
@@ -9,6 +9,7 @@ __all__ = [
     "UserCreate",
     "UserLogin",
     "UserResponse",
+    "UserRead",
     "Token",
     "TokenData",
 ]
