@@ -16,7 +16,7 @@ from app.schemas.user import UserResponse, Token
 
 Base = declarative_base()
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 # Move to config
 SECRET_KEY = "your-secret-key"
