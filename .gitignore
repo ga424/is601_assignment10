@@ -19,6 +19,8 @@ env/
 # Environment variables
 .env
 .env.*
+local.env
+!.env.example
 
 # Packaging / build outputs
 build/
