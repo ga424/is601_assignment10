@@ -14,7 +14,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from app.database import engine, get_db
+from app.database import Base, engine, get_db
 from app.models.user import User
 from app.operations import add, divide, multiply, subtract
 from app.schemas import UserCreate, UserResponse
@@ -72,7 +72,7 @@ def on_startup():
         try:
             with engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
-            User.metadata.create_all(bind=engine)
+            Base.metadata.create_all(bind=engine)
             logger.info("Database is ready; tables initialized")
             return
         except SQLAlchemyError as exc:
@@ -142,12 +142,30 @@ def add_route(a: float, b: float):
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@app.post("/add", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
+def add_route_post(operation: OperationRequest):
+    try:
+        result = add(operation.a, operation.b)
+        return OperationResponse(result=result)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 @app.get("/subtract")
 def subtract_route(a: float, b: float):
     try:
         result = subtract(a, b)
         return OperationResponse(result=result)
     except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.post("/subtract", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
+def subtract_route_post(operation: OperationRequest):
+    try:
+        result = subtract(operation.a, operation.b)
+        return OperationResponse(result=result)
+    except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
@@ -160,6 +178,15 @@ def multiply_route(a: float, b: float):
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@app.post("/multiply", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
+def multiply_route_post(operation: OperationRequest):
+    try:
+        result = multiply(operation.a, operation.b)
+        return OperationResponse(result=result)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 @app.get("/divide")
 def divide_route(a: float, b: float):
     try:
@@ -167,6 +194,17 @@ def divide_route(a: float, b: float):
         return OperationResponse(result=result)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.post("/divide", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
+def divide_route_post(operation: OperationRequest):
+    try:
+        result = divide(operation.a, operation.b)
+        return OperationResponse(result=result)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="Internal Server Error") from exc
 
 
 @app.post("/users/")

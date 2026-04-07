@@ -252,10 +252,13 @@ def browser_context():
     Provide a Playwright browser context for UI tests.
     """
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(
-            headless=True,
-            args=['--no-sandbox', '--disable-dev-shm-usage']
-        )
+        try:
+            browser = playwright.chromium.launch(
+                headless=True,
+                args=['--no-sandbox', '--disable-dev-shm-usage']
+            )
+        except Exception as exc:
+            pytest.skip(f"Playwright browser is not available in this environment: {exc}")
         logger.info("Playwright browser launched.")
         try:
             yield browser
