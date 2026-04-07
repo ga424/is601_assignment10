@@ -1,12 +1,4 @@
 <!DOCTYPE html>
-<!--
-    Document Type Declaration (DOCTYPE)
-    
-    The <!DOCTYPE html> declaration defines the document type and version of HTML.
-    It ensures that the browser interprets the document as an HTML5 document.
-    This declaration is mandatory and should be the very first line in your HTML document.
--->
-
 <html lang="en">
 <!--
     <html> Tag
@@ -16,24 +8,328 @@
     which aids in accessibility and SEO (Search Engine Optimization).
 -->
 <head>
-    <!--
-        <head> Section
-        
-        The <head> element contains meta-information about the HTML document, such as its title,
-        character set, linked resources like CSS and JavaScript files, and other metadata.
-        This information is not displayed directly on the web page.
-    -->
-    
     <meta charset="UTF-8">
-    <!--
-        <meta> Tag: Character Set
-        
-        The <meta charset="UTF-8"> tag specifies the character encoding for the HTML document.
-        UTF-8 is a widely used encoding that supports virtually all characters from all languages,
-        ensuring that text is rendered correctly.
-    -->
-    
-    <title>Hello World & Calculator Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .navbar-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background: white;
+            border-radius: 10px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            color: #333;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .calculator-section {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .calculator-section h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .calculator-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .operation-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .operation-buttons button {
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .operation-buttons button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .result-display {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">🧮 FastAPI Calculator</div>
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Welcome to FastAPI Calculator</h1>
+            <p>A simple yet powerful application to manage your calculations and user profiles. Register to get started!</p>
+            <div class="hero-buttons">
+                <a href="/register" class="btn btn-primary">Get Started</a>
+                <a href="/login" class="btn btn-secondary">Sign In</a>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Secure Authentication</h3>
+                <p>Your password is securely hashed and encrypted. Only you have access to your account.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Fast & Reliable</h3>
+                <p>Powered by FastAPI and PostgreSQL for lightning-fast calculations and operations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Easy to Use</h3>
+                <p>Simple interface for basic arithmetic operations. No complex setups needed.</p>
+            </div>
+        </div>
+
+        <div class="calculator-section">
+            <h2>Quick Calculator</h2>
+            <form class="calculator-form" id="calculatorForm">
+                <div class="input-group">
+                    <input type="number" id="a" placeholder="First number" step="any">
+                    <input type="number" id="b" placeholder="Second number" step="any">
+                </div>
+
+                <div class="operation-buttons">
+                    <button type="button" onclick="calculate('add')">➕ Add</button>
+                    <button type="button" onclick="calculate('subtract')">➖ Subtract</button>
+                    <button type="button" onclick="calculate('multiply')">✕ Multiply</button>
+                    <button type="button" onclick="calculate('divide')">÷ Divide</button>
+                </div>
+
+                <div class="result-display" id="result" style="display: none;"></div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2026 FastAPI Calculator. Built with ❤️ using FastAPI and PostgreSQL.</p>
+        </div>
+    </div>
+
+    <script>
+        async function calculate(operation) {
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+
+            if (isNaN(a) || isNaN(b)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+
+            const resultDiv = document.getElementById('result');
+            const endpoint = `/${operation}?a=${a}&b=${b}`;
+
+            try {
+                const response = await fetch(endpoint);
+                const data = await response.json();
+                resultDiv.textContent = `Result: ${data.result}`;
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+                resultDiv.style.display = 'block';
+            }
+        }
+    </script>
+</body>
     <!--
         <title> Tag
         
